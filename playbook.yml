@@ -42,7 +42,7 @@
       volumes:
       - backend-mongodb:/data/db
       networks:
-      - name: {{ network_name }}
+      - name: "{{ network_name }}"
       
   - name: "Run the backend container"
     docker_container:
@@ -56,18 +56,18 @@
       - "5050:5050"
       tty: true
       networks: 
-      - name: {{ network_name }}
+      - name: "{{ network_name }}"
 
   - name: "Run the client container"
     docker_container:
       name: client
-      image: {{ client_image_name }}
+      image: "{{ client_image_name }}"
       state: started
       entrypoint: npm start
       ports: 
       - "3000:3000"
       tty: true
       networks: 
-      - name: {{ network_name  }}
+      - name: "{{ network_name  }}"
 
 
