@@ -38,6 +38,7 @@
   tasks:
   - name: "Start MongoDB container"
     docker_container:
+      name: mongodb
       image: mongo:latest
       volumes:
       - backend-mongodb:/data/db
@@ -49,7 +50,7 @@
       name: backend
       image: "{{ backend_image_name }}"
       state: started
-      entrypoint: npm start
+      command: npm start
       env:
         MONGODB_URI: mongodb://mongodb:27017/yolomy
       ports: 
@@ -63,7 +64,7 @@
       name: client
       image: "{{ client_image_name }}"
       state: started
-      entrypoint: npm start
+      command: npm start
       ports: 
       - "3000:3000"
       tty: true
