@@ -18,8 +18,23 @@
       clone: yes
       update: yes
   
+  - name: "Create custom docker bridge network"
+    docker_network:
+      name: custom-network 
+      driver: bridge
+      ipam_config:
+        subnet: "192.168.128.0/24"
+        gateway: "192.168.128.1"
+      ipam_driver: default
+
+      
+
+  - name: "Create volume to use for persisting database"
+    docker_volume:
+      name: backend-mongodb
+
+  
   roles:
-    - docker-setup
     - client
     - backend
     - mongodb
