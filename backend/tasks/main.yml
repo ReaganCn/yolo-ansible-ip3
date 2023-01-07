@@ -1,2 +1,9 @@
 ---
 # tasks file for backend
+- name: "Build the image from the Dockerfile"
+  docker_image: 
+    name: yolo-backend:1.0
+    source: build
+    build:
+      path: /opt/yolo/backend
+    state: present
