@@ -2,6 +2,11 @@
 - hosts: all
   become: yes
 
+  vars:
+    network_name: custom-network
+    client_image_name: yolo-client:1.0
+    backend_image_name: yolo-backend:1.0
+
   pre_tasks:
   - name: Update apt cache if needed
     apt: update_cache=yes cache_valid=3600
@@ -29,4 +34,40 @@
     - setup-docker
     - client
     - backend
-    - mongodb
+
+  tasks:
+  - name: "Start MongoDB container"
+    docker_container:
+      image: mongo:latest
+      volumes:
+      - backend-mongodb:/data/db
+      networks:
+      - name: {{ network_name }}
+      
+  - name: "Run the backend container"
+    docker_container:
+      name: backend
+      image: {{ backend_image_name }}
+      state: started
+      entrypoint: npm start
+      env:
+        MONGODB_URI: mongodb://mongodb:27017/yolomy
+      ports: 
+      - "5050:5050"
+      tty: true
+      networks: 
+      - name: {{ network_name }}
+
+  - name: "Run the client container"
+    docker_container:
+      name: client
+      image: {{ client_image_name }}
+      state: started
+      entrypoint: npm start
+      ports: 
+      - "3000:3000"
+      tty: true
+      networks: 
+      - name: {{ network_name  }}
+
+
