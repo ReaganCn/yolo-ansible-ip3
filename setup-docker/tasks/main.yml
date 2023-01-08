@@ -22,7 +22,7 @@
 
 - name: "Create custom docker bridge network"
   community.docker.docker_network:
-    name: custom-network 
+    name: "{{ docker_network_name }}"
     driver: bridge
     ipam_config:
       - subnet: "192.168.128.0/24"
