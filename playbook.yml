@@ -4,8 +4,6 @@
 
   vars:
     network_name: custom-network
-    client_image_name: yolo-client:1.0
-    backend_image_name: yolo-backend:1.0
 
   pre_tasks:
   - name: Update apt cache if needed
